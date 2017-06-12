@@ -133,18 +133,23 @@ export default {
       }
     },
     mouseup (event) {
-      let point = this.getMousePos(event)
+      let mouseUpPoint = this.getMousePos(event)
       if (this.dragMode && this.overPoint) {
-        this.points.map((pointToMove) => {
-          if (pointToMove.x === this.overPoint.x && pointToMove.y === this.overPoint.y) {
-            pointToMove.x = point.x
-            pointToMove.y = point.y
-
-            this.clear()
-            this.drawAllNodes()
-          }
-        })
+        this.dragPoint(this.overPoint, mouseUpPoint)
+      } else {
+        this.addNode(mouseUpPoint)
       }
+    },
+    dragPoint (selectedPoint, newPoint) {
+      this.points.map((pointToMove) => {
+        if (pointToMove.x === selectedPoint.x && pointToMove.y === selectedPoint.y) {
+          pointToMove.x = newPoint.x
+          pointToMove.y = newPoint.y
+
+          this.clear()
+          this.drawAllNodes()
+        }
+      })
     },
     mousemove (event) {
       // let point = this.getMousePos(event)
@@ -157,7 +162,6 @@ export default {
         this.dragMode = true
       } else {
         this.dragMode = false
-        this.addNode(point)
       }
     },
     isMouseOnNode (point) {
