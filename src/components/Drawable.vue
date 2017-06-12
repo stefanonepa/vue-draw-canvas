@@ -37,7 +37,9 @@
         :width="canvasWidth"
         :height="canvasHeight"
 
-        @mousedown="addNode"
+        @mousedown="mousedown"
+        @mouseup="mouseup"
+        @mousemove="mousemove"
       ></canvas>
     </div>
 
@@ -56,6 +58,12 @@
         </tbody>
       </table>
     </div>
+
+    <div>
+      <h3>Test data</h3>
+      <label>OverPoint:</label>
+      <pre>{{overPoint}}</pre>
+    </div>
   </div>
 </template>
 
@@ -73,9 +81,12 @@ export default {
       canvasHeight: 350,
       canvasWidth: 450,
 
-      pointSize: 4,
-      strokeStyle: 'red',
-      fillStyle: 'green',
+      overPoint: null,
+      dragMode: false,
+
+      pointSize: 7,
+      strokeStyle: 'darkgrey',
+      fillStyle: '#fff',
       points: [
         { x: 100, y: 100 },
         { x: 200, y: 100 },
@@ -84,7 +95,28 @@ export default {
       ]
     }
   },
+  computed: {
+
+  },
   methods: {
+    matchPoints (checkPoint, mousePoint) {
+      if (mousePoint.x > checkPoint.x + this.pointSize) {
+        return false
+      }
+
+      if (mousePoint.x < checkPoint.x - this.pointSize) {
+        return false
+      }
+
+      if (mousePoint.y > checkPoint.y + this.pointSize) {
+        return false
+      }
+
+      if (mousePoint.y < checkPoint.y - this.pointSize) {
+        return false
+      }
+      return true
+    },
     clear () {
       this.context.clearRect(0, 0, this.canvasWidth, this.canvasHeight)
     },
@@ -100,8 +132,48 @@ export default {
         y: parseInt((evt.clientY - rect.top) / (rect.bottom - rect.top) * this.canvasHeight)
       }
     },
-    addNode (event) {
+    mouseup (event) {
       let point = this.getMousePos(event)
+      if (this.dragMode && this.overPoint) {
+        this.points.map((pointToMove) => {
+          if (pointToMove.x === this.overPoint.x && pointToMove.y === this.overPoint.y) {
+            pointToMove.x = point.x
+            pointToMove.y = point.y
+
+            this.clear()
+            this.drawAllNodes()
+          }
+        })
+      }
+    },
+    mousemove (event) {
+      // let point = this.getMousePos(event)
+      // this.selectedPoint(point)
+    },
+    mousedown (event) {
+      let point = this.getMousePos(event)
+      if (this.isMouseOnNode(point)) {
+        // point selected
+        this.dragMode = true
+      } else {
+        this.dragMode = false
+        this.addNode(point)
+      }
+    },
+    isMouseOnNode (point) {
+      return this.selectedPoint(point) !== null
+    },
+    selectedPoint (point) {
+      for (var iteratedPoint of this.points) {
+        if (this.matchPoints(iteratedPoint, point)) {
+          this.overPoint = iteratedPoint
+          return iteratedPoint
+        }
+      }
+      this.overPoint = null
+      return null
+    },
+    addNode (point) {
       this.context.save()
       this.drawNode(point)
       this.context.restore()

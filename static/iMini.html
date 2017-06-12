@@ -1,0 +1,35 @@
+<html>
+<head>
+<title>Applet iMini</title>
+</head>
+<body>
+<h1>Applet iMini</h1>
+
+<div id="cons"></div>
+
+<script src="./iMini.js"></script>
+
+	<div id="ic1">
+       <canvas id="im_1" width="800" height="520"> 
+	</div>
+   <div id="applet">
+   <script>
+   
+     jsRep = '/jscriptdev/iMini/';
+     var c = document.getElementById('im_1');
+     if (c.getContext){
+         var ctx = c.getContext('2d');
+         var loc = window.location.pathname;
+         var dir = loc.substring(0, loc.lastIndexOf('/'));
+         var im_im_1 = new iMini (c, ctx, 800, 520, 0, dir);
+         im_im_1.initialize();
+         // les deux fonctions qui activent le mode "node"
+         im_im_1.setMod('node');
+         // et le mode numérotation
+         im_im_1.setNumbers(true);
+         im_im_1.update();
+      }
+   </script>
+	</div>
+</body>
+</html>
