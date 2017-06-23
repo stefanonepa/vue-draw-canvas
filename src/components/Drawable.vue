@@ -136,6 +136,7 @@ export default {
       let mouseUpPoint = this.getMousePos(event)
       if (this.dragMode && this.overPoint) {
         this.dragPoint(this.overPoint, mouseUpPoint)
+        this.dragMode = false
       } else {
         this.addNode(mouseUpPoint)
       }
@@ -152,8 +153,11 @@ export default {
       })
     },
     mousemove (event) {
-      // let point = this.getMousePos(event)
+      let point = this.getMousePos(event)
       // this.selectedPoint(point)
+      if (this.dragMode && this.overPoint) {
+        this.dragPoint(this.overPoint, point)
+      }
     },
     mousedown (event) {
       let point = this.getMousePos(event)
