@@ -15,11 +15,11 @@
         <ul>
           <li>
             <label>Width: </label>
-            <input type="text" v-model="canvasWidth" />
+            <input type="text" v-model="canvasWidth">
           </li>
           <li>
             <label>Height: </label>
-            <input type="text" v-model="canvasHeight" />
+            <input type="text" v-model="canvasHeight">
           </li>
         </ul>
       </div>
@@ -27,7 +27,7 @@
       <div>
         <h3>Points properties:</h3>
         <label>Point Size</label>
-        <input type="number" v-model.number="pointSize" />
+        <input type="number" v-model.number="pointSize">
       </div>
     </div>
 
@@ -47,13 +47,14 @@
       <h3>Points (data)</h3>
       <table  class="ui selectable table">
         <thead>
-          <tr><th>N°</th><th>X</th><th>Y</th></tr>
+          <tr><th>N°</th><th>X</th><th>Y</th><th>Remove</th></tr>
         </thead>
         <tbody>
-          <tr v-for="(point, index) in points">
+          <tr v-for="(point, index) in points" :key="point">
             <td>{{index + 1}}</td>
             <td>{{point.x}}</td>
             <td>{{point.y}}</td>
+            <td><button @click="removePoint(index)">X</button></td>
             </tr>
         </tbody>
       </table>
@@ -99,6 +100,11 @@ export default {
 
   },
   methods: {
+    removePoint (index) {
+      this.points.splice(index, 1)
+      this.clear()
+      this.drawAllNodes()
+    },
     matchPoints (checkPoint, mousePoint) {
       if (mousePoint.x > checkPoint.x + this.pointSize) {
         return false
