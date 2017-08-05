@@ -2,7 +2,7 @@
   "name": "vue-draw-canvas",
   "version": "1.0.0",
   "description": "A Vue.js project",
-  "author": "stefanonepa <stefano.nepa@epfl.ch>",
+  "author": "stefanonepa <stefano.nepa@outlook.com>",
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",
