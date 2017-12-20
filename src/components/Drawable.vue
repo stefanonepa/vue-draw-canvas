@@ -2,7 +2,7 @@
   <div class="flex">
 
     <div>
-      <h2>Canavas properties</h2>
+      <h2>Canvas properties</h2>
       <div>
         <h3>Actions:</h3>
         <button @click="drawAllNodes">drawAllNodes</button>
